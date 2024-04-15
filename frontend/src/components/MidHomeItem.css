@@ -1,0 +1,94 @@
+
+.MidHomeItem {
+    border-left: 4px solid #dddddd6e;
+    border-right: 4px solid #dddddd6e;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* border: 2px solid red; */
+}
+
+.Card {
+    position: relative;
+    width: 100;
+    height: 40%;
+    margin: 5px 5px;
+    background-color: #FFFFFF;
+    /* border: 2px solid red; */
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.CardImage_Container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding-right: 10px;
+    /* border: 2px solid red; */
+}
+
+#CardImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#CardContent_Container{
+    position: relative;
+    font-family: "Plus Jakarta Display";
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0px;
+}
+
+#CardHeading {
+    font-family:'AbhayaLibre-Bold';
+    font-size: 35px;
+    color:rgb(100, 100, 100);
+}
+
+#CardSubheading, #CardAuthor{
+    position: inherit;
+    top:-5px;
+    font-size: 18px;
+    font-weight: 500;
+    color:#adacac;
+}
+
+#CardBody {
+    position: relative;
+    font-size: 18px;
+    font-weight: 400;
+    color: dimgray;
+    margin-top: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+#CardBody::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px; /* Adjust the height of the gradient fade */
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+    pointer-events: none; /* Ensures the gradient doesn't interfere with clicks */
+}
+
+#ReadMore {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(100, 100, 100);
+}
+
+#CardContent_Container > p:last-child {
+    margin-top: auto;
+}

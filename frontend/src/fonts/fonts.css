@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Bedini-Bold';
+    src: local('Bedini-Bold'), url('./Bedini-Bold.ttf.woff') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AbhayaLibre-Bold';
+    src: local('AbhayaLibre-Bold'), url('./AbhayaLibre-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
