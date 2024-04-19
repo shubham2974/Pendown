@@ -1,11 +1,25 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { ResizableText } from '../utils/ResizableText';
 import './RightHomeItem.css'
 import axios from "axios"
+import AppContext from './AppContext';
 
-export function RightHomeItem(){
+const getTagId = (focus) => {
+    let id;
+    
+    if (focus === 'Home' || focus === 'RightHome') {
+        id = 'RightHome';
+    } else {
+        id = 'FuseRightHome';
+    }
+    return id;
+}
+
+export function RightHomeItem({style}){
+    const { focus } = useContext(AppContext);
+    const tagId = getTagId(focus);
     return (
-        <div className='RightHomeItem'>
+        <div className='RightHomeItem' id={tagId} style={style}>
             <CreatePost/>
         </div>
     )
@@ -13,34 +27,44 @@ export function RightHomeItem(){
 
 function CreatePost(){
     const [isPosted, setIsPosted] = useState(false);
-    const users = ['Shubham29', 'Aman123', 'Naveen484']
-    async function SendPostContent(){
-        const heading = document.getElementById('PostHeading').value
-        const subheading = document.getElementById('PostSubheading').value
-        const body = document.getElementById('PostBody').value
-        const hashtags = document.getElementById('PostHashtags').value.split(' ')
-        axios.post('http://localhost:3000/post', {
-            username: users[Math.floor(Math.random() * users.length)],
-            heading: heading,
-            subheading: subheading,
-            body: body,
-            hashtags: hashtags
-          })
-          .then((res)=>{
-            alert(res.data.msg);
-            alert(res.status);
-            console.log(res);
-          })
-          .then((err)=>{
-            alert(err)
-          })
-        setIsPosted(true);
+    const users = ['Shubham29', 'Aman123', 'Naveen484', 'Aditya99']
 
-        // Reset to "Post" after a short delay (e.g., 1 second)
-        setTimeout(() => {
-            // Clear all Fields
-            setIsPosted(false);
-        }, 2000);
+    async function SendPostContent(){
+        const heading = document.getElementById('PostHeading');
+        const subheading = document.getElementById('PostSubheading');
+        const body = document.getElementById('PostBody');
+        const hashtags = document.getElementById('PostHashtags');
+        const image = document.getElementById('PostImage');
+
+        await axios.post('http://localhost:3000/post', {
+            username: users[Math.floor(Math.random() * users.length)],
+            heading: heading.value,
+            subheading: subheading.value,
+            body: body.value,
+            hashtags: hashtags.value.split(' '),
+            imageURL: image.value
+        })
+        .then(async (res) => {
+            if(res.status == 201){
+                alert(res.data.msg);
+                console.log(res);
+        
+                setIsPosted(true);
+                setTimeout(()=>{
+                    setIsPosted(false);
+                }, 1000);
+            
+            }
+        })
+        .catch((err)=>{
+            alert(err);
+        });
+
+        heading.value = '';
+        subheading.value = '';
+        body.value = '';
+        hashtags.value = '';
+        image.value = '';
     }
 
     return(

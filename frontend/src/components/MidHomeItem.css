@@ -1,12 +1,17 @@
 
 .MidHomeItem {
+    grid-area: mid;
     border-left: 4px solid #dddddd6e;
     border-right: 4px solid #dddddd6e;
     overflow-y: auto;
     scrollbar-width: none;
+    /* display: none; */
     /* border: 2px solid red; */
 }
 
+#FuseMidHome{
+    display:none;
+}
 .Card {
     position: relative;
     width: 100;
@@ -17,6 +22,7 @@
     border-radius: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    overflow: hidden;
 }
 
 .CardImage_Container {
@@ -25,6 +31,7 @@
     overflow: hidden;
     padding-right: 10px;
     /* border: 2px solid red; */
+    box-sizing: border-box;
 }
 
 #CardImage {
@@ -36,13 +43,19 @@
 }
 
 #CardContent_Container{
+    height:100%;
     position: relative;
     font-family: "Plus Jakarta Display";
     -webkit-font-smoothing: antialiased;
     display: flex;
     flex-direction: column;
     padding: 10px 0px;
+    box-sizing: border-box;
 }
+
+/* #CardContent_Container > p, #CardContent_Container > div{
+    border: 2px solid red;
+} */
 
 #CardHeading {
     font-family:'AbhayaLibre-Bold';
@@ -89,6 +102,34 @@
     color: rgb(100, 100, 100);
 }
 
-#CardContent_Container > p:last-child {
+@media (max-height: 700px){
+    #CardHeading {
+        font-size: 28px;
+        line-height: 1;
+    }
+    #CardSubheading{
+        display: none;
+    }
+    #CardAuthor{
+        font-size: 16px;
+        top:0px;
+    }
+
+    #CardBody {
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 10px;
+    }
+}
+
+#CardContent_Container > div:last-child {
     margin-top: auto;
+    display: grid;
+    grid-template-columns: 5fr 1fr 1fr;
+    grid-column-gap: 5px;
+}
+
+#PostDetails {
+    /* border: 2px solid red; */
+    cursor: pointer;
 }

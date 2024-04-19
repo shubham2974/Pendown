@@ -1,0 +1,7 @@
+.LeftHomeItem {
+    grid-area: left;
+}
+
+#FuseLeftHome {
+    display: none;
+}

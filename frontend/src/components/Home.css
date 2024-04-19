@@ -15,7 +15,18 @@
     top: 4em;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr; /* Three equal columns */
+    grid-template-areas: "left mid right";
     /* grid-gap: 5px; */
     /* top: 1vh; */
     /* border: 2px solid red; */
+  }
+
+  .div1{
+    grid-area: left;
+  }
+  .div2{
+    grid-area: mid;
+  }
+  .div3{
+    grid-area: right;
   }
