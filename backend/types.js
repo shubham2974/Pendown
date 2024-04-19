@@ -51,6 +51,9 @@ const createPost = zod.object({
     subheading: zod.string(),
     body: zod.any(),
     hashtags: zod.array(zod.string()).min(1, "Please provide atlease one hashtags"),
+    imageURL: zod.string().refine(value => validateUserAndPass(value), {
+        message: 'Username must contain at least one letter and one number'
+    })
 })
 
 const updatePost = zod.object({
@@ -61,6 +64,9 @@ const updatePost = zod.object({
     subheading: zod.string(),
     body: zod.any(),
     hashtags: zod.array(zod.string()).min(1, "Please provide atlease one hashtags"),
+    imageURL:zod.string().refine(value => validateUserAndPass(value), {
+        message: 'Username must contain at least one letter and one number'
+    })
 })
 
 const addComment = zod.object({

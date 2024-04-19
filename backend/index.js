@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const { createPost, createAccount, updatePost } = require('./types');
 const { user, post } = require('./db');
 const app = express()
@@ -54,7 +55,8 @@ app.post("/post", async (req, res)=>{
         });
         return;
     }
-
+    
+    console.log("user Zod passed")
     // if Post Validation is successfull push the post in MongoDB account, 
     const checkUsername = await user.exists({
         username: `${postPayload.username}`  
@@ -67,17 +69,15 @@ app.post("/post", async (req, res)=>{
         return;
     }
 
-    const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const randomIndex = Math.floor(Math.random() * characters.length);
-    const randomCharacter = characters[randomIndex];
-    const postId = postPayload.username + randomCharacter;
+    const customId = new mongoose.Types.ObjectId();
     const newPost = {
+        _id: customId,
         username: postPayload.username,
-        postId: postId,
         heading: postPayload.heading,
         subheading: postPayload.subheading,
         body: postPayload.body,
         hashtags: postPayload.hashtags,
+        imageURL: postPayload.imageURL,
         likes: 0,
         comments: []
     }
@@ -91,7 +91,7 @@ app.post("/post", async (req, res)=>{
 
     if(userResult && postResult){
         res.status(201).json({
-            msg: `Post: ${postId}: ${postPayload.heading} Created`
+            msg: `Post: ${postPayload.heading} Posted`
         })
     }else{
         res.status(400).json({
@@ -100,6 +100,26 @@ app.post("/post", async (req, res)=>{
     }
 })
 
+app.put('/post_update', async (req, res)=>{
+    const updatePayload = req.body;
+    console.log(req.body)
+    const {_id, ...updateData} = updatePayload
+    const updateResult = await post.findOneAndUpdate({
+        _id: _id
+    }, updateData,
+    { new: true})
+
+    if(updateResult){
+        res.status(201).json({
+            msg: `Updated ${updatePayload._id}`,
+            updateData: updateResult
+        })
+    }else{
+        res.status(400).json({
+            msg: `Bad Request, check it why ${updateResult}`
+        })
+    }
+})
 
 app.get('/home', async (req, res)=>{
     const feedPayload = req.body;

@@ -39,7 +39,7 @@ const postSchema = mongoose.Schema({
         type: String, 
         required: true
     },
-    postId: {
+    _id: {
         type: String,
         unique: true,
         required: true,
@@ -57,10 +57,14 @@ const postSchema = mongoose.Schema({
         required: true
     },
     hashtags: [String],
+    imageURL: {
+        type: String,
+        required: true
+    },
     likes: {
         type: Number
     },
-    comments: [String]
+    comments: [String],
 })
 
 const userSchema = mongoose.Schema({
