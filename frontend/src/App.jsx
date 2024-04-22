@@ -17,6 +17,8 @@ function shuffleArray(array) {
 function App() {
   const [blogs, setBlogs] = useState([]);
   const [focus, setFocus] = useState(['Home'])
+  const [openModal, setOpenModal] = useState(false)
+  const [username, setUsername] = useState()
   const [order, setOrder] = useState({
     left: '1 / 2',
     mid: '2 / 3',
@@ -28,12 +30,25 @@ function App() {
     'Trending': {key: 'LeftHome', format: { left: '2 / 3', mid: '1 / 2', right: '3 / 4' }},
   });
 
-  const fetchData = () => {
-      axios.get(`http://localhost:3000/home`)
-      .then((res) => {
-          const shuffledBlogs = shuffleArray(res.data.msg);
+  const fetchData = async () => {
+    try{
+        const feeds = await axios.get(`http://localhost:3000/home`, {
+        withCredentials: true
+        })
+
+        const shuffledBlogs = shuffleArray(feeds.data.msg);
           setBlogs(shuffledBlogs);
-      });
+
+    }catch(error){
+      console.log(error)
+      if(error.response.status === 401 && error.response.data && error.response.data.msg === 'Unauthorized'){
+        // alert("Unauthorized");
+        setOpenModal(true);
+      }
+      else{
+        console.log(error)
+      }
+    }
   }
   const focusSection = (value) =>{
     const getValue = (key) => {
@@ -52,7 +67,7 @@ function App() {
 
 
   return (
-      <AppContext.Provider value={{ blogs, order, focus, focusSection, fetchData }}>
+      <AppContext.Provider value={{ blogs, order, focus, openModal, username, setUsername, setOpenModal,focusSection, fetchData }}>
           <NavigationBar />
           <Home />
       </AppContext.Provider>

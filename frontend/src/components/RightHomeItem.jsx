@@ -26,8 +26,9 @@ export function RightHomeItem({style}){
 }
 
 function CreatePost(){
-    const [isPosted, setIsPosted] = useState(false);
-    const users = ['Shubham29', 'Aman123', 'Naveen484', 'Aditya99']
+    const { username, setOpenModal } = useContext(AppContext);
+    const [postBtnTxt, setPostBtnTxt] = useState('Post');
+    const [postStatus, setPostBtn] = useState('postBtn')
 
     async function SendPostContent(){
         const heading = document.getElementById('PostHeading');
@@ -36,35 +37,52 @@ function CreatePost(){
         const hashtags = document.getElementById('PostHashtags');
         const image = document.getElementById('PostImage');
 
-        await axios.post('http://localhost:3000/post', {
-            username: users[Math.floor(Math.random() * users.length)],
-            heading: heading.value,
-            subheading: subheading.value,
-            body: body.value,
-            hashtags: hashtags.value.split(' '),
-            imageURL: image.value
-        })
-        .then(async (res) => {
-            if(res.status == 201){
-                alert(res.data.msg);
-                console.log(res);
-        
-                setIsPosted(true);
-                setTimeout(()=>{
-                    setIsPosted(false);
-                }, 1000);
+        try{
+            const postResult = await axios.post('http://localhost:3000/post/createpost/', {
+                username: username,
+                heading: heading.value,
+                subheading: subheading.value,
+                body: body.value,
+                hashtags: hashtags.value.split(' '),
+                imageURL: image.value
+                }, {
+                withCredentials: true
+                })
             
+            if(postResult.status == 201){
+                setPostBtnTxt('Posted');
+                setPostBtn('successPostBtn')
+                setTimeout(()=>{
+                    setPostBtn('postBtn')
+                    setPostBtnTxt('Post');
+                    
+                }, 1000);
+                
+                setTimeout(()=>{
+                    console.log("Clearing")
+                    heading.value = '';
+                    subheading.value = '';
+                    body.value = '';
+                    hashtags.value = '';
+                    image.value = '';
+                }, 1500)
             }
-        })
-        .catch((err)=>{
-            alert(err);
-        });
-
-        heading.value = '';
-        subheading.value = '';
-        body.value = '';
-        hashtags.value = '';
-        image.value = '';
+            
+        }catch(error){
+            console.log(error)
+            setPostBtnTxt('Retry')
+            setPostBtn('retryPostBtn')
+            if(error.response.status === 401 && error.response.data && error.response.data.msg === 'Unauthorized'){
+                setTimeout(()=>{
+                    setOpenModal(true);
+                    setPostBtn('postBtn')
+                    setPostBtnTxt('Post');
+                }, 500);
+            }else{
+                console.log(error)
+            }
+        }
+        
     }
 
     return(
@@ -80,8 +98,8 @@ function CreatePost(){
             </div>
             <div className='PostFooter'>
                 <ResizableText className='PostText' id='PostImage' placeholder='Paste Image URL'/>
-                <div onClick={()=>SendPostContent()}>
-                    {isPosted ? "Posted" : "Post"}
+                <div className='postBtnClass' id={postStatus} onClick={()=>SendPostContent()}>
+                    {postBtnTxt}
                 </div>
             </div>
         </div>

@@ -1,10 +1,15 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import LogoImage from '../images/logo.png';
 import AppContext from './AppContext';
 import './NavigationBar.css';
+import { LoginModal } from '../utils/LoginModal';
+import AccountImg from '../images/account.png';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export function NavigationBar(){
     const [activeTab, setActiveTab] = useState('Home')
+    console.log('Navbar')
     return (
         <div className='nav_bar'>
             <LeftNav/>
@@ -38,10 +43,56 @@ function MidNav({setActiveTab, activeTab}){
 }
 
 function RightNav({setActiveTab, activeTab}){
+    const { openModal, setOpenModal, username, setUsername } = useContext(AppContext);
+    // const [openModal, setOpenModal] = useState(false)
+    const [mode, setMode] = useState()
+    const [right_nav_div, setRightNavDiv] = useState('Login')
+
+    useEffect(()=>{
+        const cookieUsername = Cookies.get('username');
+        if (cookieUsername) {
+            // Decode the JWT token
+            // const decodedToken = parseJwt(token);
+            // console.log(decodedToken)
+            // Set the username state
+            setUsername(cookieUsername);
+            setRightNavDiv('Logout')
+        }else {
+            console.log('No token found in cookies'); // Log if no token found
+        }
+    }, [])
+
+    async function AccountLogout(){
+        try{
+            const logout = await axios.post(`http://localhost:3000/account/logout`,{}, {
+                withCredentials: true
+            })
+            console.log(logout)
+            if(logout.status === 200){
+                setRightNavDiv('Login')
+            }
+        }catch(error){
+            console.log(error)
+        }
+    }
     return (
         <div className="right_nav">
-            <Tabs task={() => {}} heading={"Log in"} setActiveTab={setActiveTab} activeTab={activeTab}/>
-            <Button heading={"Sign up"}/>
+            {
+                right_nav_div === 'Login' ? 
+                <div className="nav_login">
+                    <Tabs task={() => {setOpenModal(true); setMode('login')}} heading={"Login"} setActiveTab={setActiveTab} activeTab={activeTab}/>
+                    <Button task={() => {setOpenModal(true); setMode('signup')}} heading={"Sign up"}/>
+                    <LoginModal mode={mode} open={openModal} onClose={()=> setOpenModal(false)} setRightNavDiv={setRightNavDiv} setUsername={setUsername}/>
+                </div>
+                : 
+                <div className="nav_logout">
+                    <div className='accountContent'>
+                        <img id='accountImg' src={AccountImg}/>
+                        <span className='nav_heading'>{username}</span>
+                    </div>
+                    <Button task={()=>{AccountLogout()}} heading={"Logout"}/>
+                </div>
+            }
         </div>
     )
 }
@@ -54,9 +105,9 @@ function Tabs({task, heading, setActiveTab, activeTab}){
     )
 }
 
-function Button({heading}){
+function Button({task, heading}){
     return (
-        <div id='nav_button'>
+        <div onClick={()=>{task();}} id='nav_button'>
             <p style={{
                 padding:"10px",
                 backgroundColor: "#444BFF",

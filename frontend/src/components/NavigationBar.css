@@ -39,7 +39,39 @@
     justify-content:end;
     /* border: 2px solid red; */
 }
+.nav_login {
+    display: flex;
+    /* border: 2px solid red; */
+}
 
+.nav_logout{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    /* border: 2px solid red; */
+}
+.accountContent{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    height: 100%;
+    padding: 0px 10px;
+    box-sizing: border-box;
+    /* border:2px solid red; */
+    color: rgb(100, 100, 100);
+}
+/* .accountContent > span, img{
+    border:2px solid red;
+} */
+
+#accountImg{
+    width: 2rem;
+    height: 2rem;
+    opacity: 0.8;
+    margin-right: 10px;
+}
 .nav_heading, #nav_button {
     cursor: pointer;
     display: flex;

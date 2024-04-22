@@ -43,6 +43,15 @@ const createAccount = zod.object({
     })
 })
 
+const loginAccount = zod.object({
+    username: zod.string().refine(value => validateUserAndPass(value), {
+        message: 'Username must contain at least one letter and one number'
+    }),
+    password: zod.string().refine(value => validateUserAndPass(value), {
+        message: 'Password must contain at least one letter and one number'
+    })
+})
+
 const createPost = zod.object({
     username: zod.string().refine(value => validateUserAndPass(value), {
         message: 'Username must contain at least one letter and one number'
@@ -51,9 +60,7 @@ const createPost = zod.object({
     subheading: zod.string(),
     body: zod.any(),
     hashtags: zod.array(zod.string()).min(1, "Please provide atlease one hashtags"),
-    imageURL: zod.string().refine(value => validateUserAndPass(value), {
-        message: 'Username must contain at least one letter and one number'
-    })
+    imageURL: zod.string()
 })
 
 const updatePost = zod.object({
@@ -64,9 +71,7 @@ const updatePost = zod.object({
     subheading: zod.string(),
     body: zod.any(),
     hashtags: zod.array(zod.string()).min(1, "Please provide atlease one hashtags"),
-    imageURL:zod.string().refine(value => validateUserAndPass(value), {
-        message: 'Username must contain at least one letter and one number'
-    })
+    imageURL:zod.string()
 })
 
 const addComment = zod.object({
@@ -76,6 +81,7 @@ const addComment = zod.object({
 
 module.exports = {
     createAccount,
+    loginAccount,
     createPost,
     updatePost,
     addComment

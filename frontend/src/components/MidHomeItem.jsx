@@ -52,7 +52,8 @@ function Card({blog_data}){
         try{
             const { data } = await axios({
                 method: 'put',
-                url: `http://localhost:3000/post_update/`, 
+                url: `http://localhost:3000/post/updatepost/`,
+                withCredentials: true,
                 data: {
                     _id: blog_data["_id"],
                     likes: like

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { array, any } = require('zod');
+const {mongoDBConnectPath} = require('./constants')
 
 /*
 [{ username: "Shubham",
@@ -29,7 +30,7 @@ posts: [{
 }
 */
 
-mongoose.connect("mongodb+srv://admin:TodoDB@cluster0.ebni6sx.mongodb.net/pendown")
+mongoose.connect(mongoDBConnectPath)
 const postSchema = mongoose.Schema({
     createdAt: {
         type: Date,

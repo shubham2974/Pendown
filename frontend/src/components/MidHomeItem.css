@@ -23,6 +23,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     overflow: hidden;
+    transition: box-shadow 0.3s ease-in;
+}
+
+.Card:hover {
+    box-shadow: 0px 0px 1rem rgba(126, 126, 126, 0.896);
 }
 
 .CardImage_Container {
@@ -102,6 +107,12 @@
     color: rgb(100, 100, 100);
 }
 
+#Likes, #Comments{
+    font-size: 18px;
+    font-weight: 500;
+    color:#adacac; 
+}
+
 @media (max-height: 700px){
     #CardHeading {
         font-size: 28px;
@@ -119,6 +130,11 @@
         font-size: 16px;
         font-weight: 400;
         margin-top: 10px;
+    }
+    #Likes, #Comments{
+        font-size: 16px;
+        font-weight: 500;
+        color:#adacac; 
     }
 }
 
