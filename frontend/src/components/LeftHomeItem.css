@@ -5,3 +5,79 @@
 #FuseLeftHome {
     display: none;
 }
+
+.Trending {
+    position: relative;
+    /* height: 85%; */
+    margin: 5px 5px;
+    background-color: #e3e2e27f;
+    border-radius: 10px;
+    display: grid;
+    grid-template-rows: 0.9fr 4fr 4fr;
+    grid-row-gap: 10px;
+    font-family: "Plus Jakarta Display";
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    /* border: 2px solid red; */
+}
+
+.TrendingHeadline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 2px solid red; */
+}
+.TrendingHeadline > span {
+    font-size: 20px;
+    font-weight: 500;
+    color:grey;
+    /* border:2px solid red; */
+}
+
+.TrendingSections {
+    height: 2rem;
+    color:#adacac;
+    /* margin-bottom: 2px; */
+    display: flex;
+    align-items: center;
+    /* border: 2px solid black; */
+}
+.Hashtags, .Profiles {
+    /* border: 2px solid red; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    font-family: "Plus Jakarta Display";
+    -webkit-font-smoothing: antialiased;
+    font-size: 17px;
+    font-weight: 600;
+    color:rgb(120, 120, 120);
+}
+
+.HashtagContent {
+    /* border: 2px solid rgb(79, 235, 79); */
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 5px;
+    /* margin: 2px 0px; */
+    border-radius: 8px;
+    background-color: rgb(244, 244, 244);
+}
+
+.HashtagDetails {
+    /* border: 2px solid red; */
+    width: 90px;
+    display: flex;
+    justify-content:end;
+    font-weight: 500;
+    color:#adacac;
+}
+
+#HashtagCountes{
+    margin-right: 4px;
+}
+
+
+.Hashtags > *:not(:last-child), .Profiles > * {
+    margin-bottom: 8px;
+  }
