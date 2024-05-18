@@ -13,6 +13,7 @@ function shuffleArray(array) {
 
 const useAppContext = () => {
   const [blogs, setBlogs] = useState([]);
+  const [hashtags, setHashtags] = useState([]);
   const [focus, setFocus] = useState('Home');
   const [openModal, setOpenModal] = useState(false);
   const [username, setUsername] = useState();
@@ -25,25 +26,60 @@ const useAppContext = () => {
   const [store] = useState({
     'Home': {key: 'Home', format: { left: '1 / 2', mid: '2 / 3', right: '3 / 4' }},
     'Blog': {key: 'RightHome', format: { left: '1 / 2', mid: '3 / 4', right: '2 / 3' }},
-    'Trending': {key: 'LeftHome', format: { left: '2 / 3', mid: '1 / 2', right: '3 / 4' }},
+    'Trending': {key: 'LeftHome', format: { left: '1 / 2', mid: '2 / 3', right: '3 / 4' }},
+    'Profile': {key: 'Profile', format: {left: '1 / 2', mid: '2 / 3', right: '3 / 4'}}
   });
+
+  const fetchPosts = async () => {
+    try {
+        const feeds = await axios.get(`http://localhost:3000/home`, {
+          withCredentials: true
+        });
+        return feeds;
+    } catch (error) {
+        console.log(error);
+        if (error.response.status === 401 && error.response.data.msg === 'Unauthorized') {
+          console.log("In error")
+          setOpenModal(true);
+        } else {
+          console.log(error);
+        }
+    }
+  }
 
   const fetchData = async () => {
     try {
-      const feeds = await axios.get(`http://localhost:3000/home`, {
-        withCredentials: true
-      });
-      const shuffledBlogs = shuffleArray(feeds.data.msg);
+      const feeds = await fetchPosts(); 
+      const myFeeds = feeds.data.msg.filter(feed =>{
+            return username != feed.username;
+        })
+      const shuffledBlogs = shuffleArray(myFeeds);
       setBlogs(shuffledBlogs);
     } catch (error) {
       console.log(error);
-      if (error.response && error.response.status === 401 && error.response.data && error.response.data.msg === 'Unauthorized') {
+      if (error.response.status === 401 && error.response.data.msg === 'Unauthorized') {
         setOpenModal(true);
       } else {
         console.log(error);
       }
     }
   };
+
+  const fetchHashtags = async () => {
+    try {
+        const allhashtags = await axios.get(`http://localhost:3000/post/hashtags/`,{
+            withCredentials: true
+        });
+        console.log(allhashtags.data.msg)
+        setHashtags(allhashtags.data.msg);
+    }catch (error){
+        if(error.response && error.response.status === 401 && error.response.data && error.response.data.msg === 'Unauthorized'){
+            setOpenModal(true);
+        } else {
+            console.log(error);
+        }
+    }
+  }
 
   const focusSection = (value) => {
     const section = store[value] || store['Home'];
@@ -53,9 +89,10 @@ const useAppContext = () => {
 
   useEffect(() => {
     focusSection(focus);
+    fetchHashtags();
   }, []); // Empty dependency array means it will run once when component mounts
 
-  return { blogs, order, focus, openModal, username, setUsername, setOpenModal, focusSection, fetchData };
+  return { blogs, hashtags, order, focus, openModal, username, setBlogs, setUsername, setOpenModal, focusSection, fetchData, fetchHashtags, fetchPosts };
 };
 
 export default useAppContext;

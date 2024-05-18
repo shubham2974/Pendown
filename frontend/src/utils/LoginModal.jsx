@@ -7,7 +7,7 @@ import AppContext from '../components/AppContext';
 
 export function LoginModal({mode , open, onClose, setRightNavDiv, setUsername}){
     if(!open) return null
-    const { fetchData } = useContext(AppContext);
+    const { fetchData, fetchHashtags } = useContext(AppContext);
     const [loginStatus, setLoginStatus] = useState('userBtnLogin')
     const [loginText, setLoginText] = useState(mode === 'signup' ? 'Sign Up' : 'Login');
     
@@ -36,6 +36,7 @@ export function LoginModal({mode , open, onClose, setRightNavDiv, setUsername}){
                     onClose()
                 }, 1000);
                 fetchData();
+                fetchHashtags()
             }
         } catch(error){
             console.log(error.response)

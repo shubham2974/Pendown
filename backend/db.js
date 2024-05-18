@@ -31,6 +31,23 @@ posts: [{
 */
 
 mongoose.connect(mongoDBConnectPath)
+
+const hashtagsSchema = mongoose.Schema({
+    _id: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    hashtagName: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    count: {
+        type: Number
+    }
+})
+
 const postSchema = mongoose.Schema({
     createdAt: {
         type: Date,
@@ -94,13 +111,18 @@ const userSchema = mongoose.Schema({
             }
         }
     },
-    posts: [postSchema]
+    posts: [postSchema],
+    views: {
+        type: Number
+    }
 })
 
+const hashtag = mongoose.model('hashtag', hashtagsSchema);
 const post = mongoose.model('post', postSchema);
 const user = mongoose.model('user', userSchema);
 
 module.exports = {
     user,
-    post
+    post,
+    hashtag
 }

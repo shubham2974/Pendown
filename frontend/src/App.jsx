@@ -8,10 +8,10 @@ import axios from "axios"
 import './fonts/fonts.css';
 
 function App() {
-  const { blogs, order, focus, openModal, username, setUsername, setOpenModal, focusSection, fetchData } = useAppContext();
+  const { blogs, hashtags, order, focus, openModal, username, setBlogs, setUsername, setOpenModal, focusSection, fetchData, fetchHashtags, fetchPosts } = useAppContext();
 
   return (
-      <AppContext.Provider value={{ blogs, order, focus, openModal, username, setUsername, setOpenModal,focusSection, fetchData }}>
+      <AppContext.Provider value={{ blogs, hashtags, order, focus, openModal, username, setBlogs, setUsername, setOpenModal,focusSection, fetchData, fetchHashtags, fetchPosts }}>
           <NavigationBar />
           <Home />
       </AppContext.Provider>

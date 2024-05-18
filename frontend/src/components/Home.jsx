@@ -14,9 +14,6 @@ export function Home(){
                 <LeftHomeItem style={{gridColumn: order.left}}/>
                 <MidHomeItem style={{gridColumn: order.mid}}/>
                 <RightHomeItem style={{gridColumn: order.right}}/>
-                {/* <div className='div1' style={{ gridColumn: order.left, border: "2px solid red"}}>Section 1</div>
-                <div className='div2' style={{ gridColumn: order.mid}}>Section 2</div>
-                <div className='div3' style={{ gridColumn: order.right}}>Section 3</div> */}
             </div>
         </div>
     )

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './LeftHomeItem.css'
 import AppContext from './AppContext';
 
@@ -22,15 +22,18 @@ export function LeftHomeItem({style}){
     )    
 }
 
-function checkout(blogs){
-    blogs.map((blog)=>{
-        console.log(blog)
-    })
-}
-
 function Trending(){
-    const {blogs} = useContext(AppContext);
-    checkout(blogs)
+    const {setBlogs, hashtags, fetchPosts} = useContext(AppContext);
+    const [activeTrending, SetTrending] = useState()
+    async function GetAllPosts(name){
+        // console.log(name)
+        const feeds = await fetchPosts();
+        // console.log(feeds.data.msg)
+        const newFeeds = feeds.data.msg.filter((feed)=>{
+            return feed.hashtags.includes(name)
+        })
+        setBlogs(newFeeds)
+    }
     return(
         <div className='Trending'>
             <div className="TrendingHeadline">
@@ -38,26 +41,27 @@ function Trending(){
             </div>
             <div className="Hashtags">
                 <div className='TrendingSections'>Hashtags</div>
-                <Hashtag name={"100DaysOfCode"} countes={"114"} category={'posts'}/>
-                <Hashtag name={"WebDevelopment"} countes={"98"} category={'posts'}/>
-                <Hashtag name={"SoftwareEngineering"} countes={"86"} category={'posts'}/>
-                <Hashtag name={"Pendown"} countes={"48"} category={'posts'}/>
+                {
+                    hashtags.slice(0, 4).map((tag, index)=>{
+                        return <Hashtag key={tag._id} task={(name) => {GetAllPosts(name); SetTrending(name)}} name={tag.hashtagName} countes={tag.count} category={'posts'} activeTrending={activeTrending}/>
+                    })
+                }
             </div>
             <div className="Profiles">
                 <div className='TrendingSections'>Profiles</div>
-                <Hashtag name={"Wasim786"} countes={"284"} category={'views'}/>
-                <Hashtag name={"Naveen484"} countes={"198"} category={'views'}/>
-                <Hashtag name={"Aman123"} countes={"150"} category={'views'}/>
-                <Hashtag name={"Shubham29"} countes={"142"} category={'views'}/>
+                <Hashtag name={"@Wasim786"} countes={"284"} category={'views'}/>
+                <Hashtag name={"@Naveen484"} countes={"198"} category={'views'}/>
+                <Hashtag name={"@Aman123"} countes={"150"} category={'views'}/>
+                <Hashtag name={"@Shubham29"} countes={"142"} category={'views'}/>
             </div>
         </div>
     )
 }
 
-function Hashtag({name, countes, category}){
+function Hashtag({task, name, countes, category, activeTrending}){
     return (
-        <div className="HashtagContent">
-            <span id='HashtagName'>#{name}</span>
+        <div className="HashtagContent" id={activeTrending === name ? 'HashtagContentActive' : 'HashtagContentDeactive'} onClick={()=>{task(name);}}>
+            <span id='HashtagName'>{name}</span>
             <div className='HashtagDetails'>
                 <span id='HashtagCountes'>{countes}</span>
                 <span id='HashtagCategory'>{category}</span>

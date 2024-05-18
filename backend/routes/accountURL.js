@@ -32,7 +32,8 @@ router.post('/signup', async (req, res)=>{
         const result = await user.create({
             username: accountPayload.username,
             password: accountPayload.password,
-            posts: []
+            posts: [],
+            views: 1
         });
     
         console.log(result);
@@ -49,7 +50,9 @@ router.post('/signup', async (req, res)=>{
         };
 
         res.cookie('jwt', token, options);
-        res.cookie('username', accountPayload.username)
+        res.cookie('username', accountPayload.username, {
+            maxAge: 2 * 60 * 60 * 1000, // Cookie expires in 2 hours
+        })
         res.status(201).json({
             msg: `Username: ${accountPayload.username} Account Created`,
             jwt: token
@@ -101,7 +104,9 @@ router.post('/login', async(req, res)=>{
             httpOnly: true,
             maxAge: 2 * 60 * 60 * 1000
         })
-        res.cookie('username', UserLogin.username)
+        res.cookie('username', UserLogin.username, {
+            maxAge: 2 * 60 * 60 * 1000
+        })
         res.status(200).json({
             msg: "Successfully Logged In"
         })

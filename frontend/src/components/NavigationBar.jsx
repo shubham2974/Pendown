@@ -29,12 +29,12 @@ function LeftNav(){
 }
 
 function MidNav({setActiveTab, activeTab}){
-    const { fetchData, focusSection } = useContext(AppContext);
+    const { fetchData, focusSection, fetchHashtags } = useContext(AppContext);
 
     return (
         <div className="mid_nav">
-            <Tabs task={() => { fetchData(); focusSection("Home"); }} heading={"Home"} setActiveTab={setActiveTab} activeTab={activeTab}/>
-            <Tabs task={() => { focusSection("Trending"); }} heading={"Trending"} setActiveTab={setActiveTab} activeTab={activeTab}/>
+            <Tabs task={() => { fetchData(); fetchHashtags(); focusSection("Home"); }} heading={"Home"} setActiveTab={setActiveTab} activeTab={activeTab}/>
+            <Tabs task={() => { fetchHashtags(); focusSection("Trending"); }} heading={"Trending"} setActiveTab={setActiveTab} activeTab={activeTab}/>
             <Tabs task={() => { focusSection("Blog"); }} heading={"Blog"} setActiveTab={setActiveTab} activeTab={activeTab}/>
             <Tabs task={() => {}} heading={"Our Story"} setActiveTab={setActiveTab} activeTab={activeTab}/>
             <Tabs task={() => {}} heading={"Contact"} setActiveTab={setActiveTab} activeTab={activeTab}/>
@@ -43,7 +43,7 @@ function MidNav({setActiveTab, activeTab}){
 }
 
 function RightNav({setActiveTab, activeTab}){
-    const { openModal, setOpenModal, username, setUsername } = useContext(AppContext);
+    const { openModal, setOpenModal, username, setUsername, fetchData} = useContext(AppContext);
     // const [openModal, setOpenModal] = useState(false)
     const [mode, setMode] = useState()
     const [right_nav_div, setRightNavDiv] = useState('Login')
@@ -58,9 +58,10 @@ function RightNav({setActiveTab, activeTab}){
             setUsername(cookieUsername);
             setRightNavDiv('Logout')
         }else {
+            setRightNavDiv('Login')
             console.log('No token found in cookies'); // Log if no token found
         }
-    }, [])
+    }, [fetchData])
 
     async function AccountLogout(){
         try{

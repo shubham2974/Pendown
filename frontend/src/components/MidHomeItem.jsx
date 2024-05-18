@@ -10,7 +10,7 @@ import axios from 'axios';
 const getTagId = (focus) => {
     let id;
     
-    if (focus === 'Home'){
+    if (focus === 'Home' || focus === 'LeftHome'){
         id = 'MidHome';
     } else {
         id = 'FuseMidHome';

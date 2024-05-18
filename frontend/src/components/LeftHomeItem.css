@@ -62,6 +62,20 @@
     /* margin: 2px 0px; */
     border-radius: 8px;
     background-color: rgb(244, 244, 244);
+    transition: box-shadow 0.1s ease-in;
+}
+
+.HashtagContent:hover{
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(126, 126, 126, 0.896);
+}
+#HashtagContenDeactive{
+    background-color: rgb(244, 244, 244);
+}
+#HashtagContentActive{
+    background-color: rgb(220, 220, 220);
+    /* box-shadow: 0px 0px 5px rgba(126, 126, 126, 0.896); */
+    border: 2px solid grey;
 }
 
 .HashtagDetails {

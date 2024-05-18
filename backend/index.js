@@ -24,11 +24,12 @@ app.get('/home', cookieJWTAuth, async (req, res)=>{
     console.log(feedPayload)
     const feeds = await post.find();
     if(feeds){
-        const myfeeds = feeds.filter(feed =>{
-            return feed.username != feedPayload.username;
-        })
         res.status(200).json({
-            msg: myfeeds
+            msg: feeds
+        })
+    } else{
+        res.status(400).json({
+            msg: `Error Getting Feeds from database`
         })
     }
 })
